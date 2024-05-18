@@ -79,6 +79,9 @@ const addProjectClick = function(){
         insertAddProject(projectName);
     })
 
+    //create internal div
+    const container = document.createElement("div");
+
     //text input
     const projectInput = document.createElement("input");
     projectInput.setAttribute("type", "text");
@@ -90,8 +93,9 @@ const addProjectClick = function(){
     const cancelButton = document.createElement("button");
     addButton.textContent = "Add";
     cancelButton.textContent = "Cancel";
-    form.appendChild(addButton);
-    form.appendChild(cancelButton);
+    container.appendChild(addButton);
+    container.appendChild(cancelButton);
+    form.appendChild(container);
 
     addButton.setAttribute("type", "submit");
     addButton.classList.add("add-button");

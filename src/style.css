@@ -36,12 +36,22 @@ nav{
     max-height: 200px;
 }
 
+#time-sort button{
+    font-size: 17px;
+    flex: 1 1 0;
+}
+
 nav > button{
     margin-inline: 15px;
     margin-block: 5px;
     background: rgba(0,0,0,0.001);
     border-style: none;
-    border-radius: 4px;
+    border-radius: 7px;
+    padding: 5px;
+}
+
+nav > button:hover{
+    background-color: white;
 }
 
 #content{
@@ -63,6 +73,7 @@ footer{
     display: flex;
     flex-direction: column;
     margin-inline: 200px;
+    gap: 10px;
 }
 
 .task-content{
@@ -70,23 +81,33 @@ footer{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 
 .task-content span{
     display: flex;
     flex-direction: row;
     gap: 10px;
+    align-items: center;
 }
 
 .task-button{
     display: flex;
     flex-direction: row;
+    border-radius: 4px;
 }
 
 
 .task-title{
     border-style: none;
     background: rgba(0,0, 0, 0.001);
+    height: 20px;
+    border-radius: 2px;
+}
+
+.task-title:focus{
+    outline: 1px grey solid;
+
 }
 
 .task-content > form{
@@ -97,6 +118,8 @@ footer{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    padding-inline: 6px;
 }
 
 .projects button{
@@ -104,9 +127,29 @@ footer{
     padding: 0px;
 }
 
+.add-todo-button{
+    background-color: #c1e1c1;
+    border-radius: 4px;
+}
 
+.projects form{
+    display: flex;
+    flex-direction: column;
+}
 
+.projects form input{
+    border-style: none;
+    border: 1px solid grey;
+    border-radius: 4px;
+}
 
+.delete-button{
+    max-height: 20px;
+}
+
+.project-content p{
+    font-size: 17px;
+}
 
 
 
