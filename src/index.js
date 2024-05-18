@@ -1,18 +1,179 @@
 import './style.css';
 import {Todo} from "./todo";
-import { createProject, addItem, removeItem, showProjects, checkProject, displayProject} from "./project";
-import {loadAll} from './ui';
+import { createProject, addItem, removeItem, getProjects, checkProject, getAllTodos, getTodos, removeProject} from "./project";
+import {loadAll, load, insertTodoButton, addTodoClick} from './ui';
 
 
-//temp add stuff to localStorage
-createProject("china");
-addItem("china", Todo("eat dogs", "i love dogs", "11-11-2023", "high"));
+//functions
+
+//display projects in sidebar
+const displayProjects = function(){
+    const projects = getProjects();
+    const projectsBar = document.querySelector(".projects");
+
+    //remove existing
+    const toRemove = Array.from(document.querySelectorAll(".projects > button"));
+    toRemove.forEach(element =>{
+        element.parentNode.removeChild(element);
+    })
+    
+    //insert projects
+    for(let i=0; i < projects.length; i++){
+        let projectButton = document.createElement("button");
+        let container = document.createElement("span");
+        let projectName = document.createElement("p");
+        let deleteButton = document.createElement("button");
+
+
+        container.classList.add("project-content");
+        projectButton.classList.add("project");
+        deleteButton.classList.add("delete-button");
+
+        deleteButton.setAttribute("type", "button");
+        projectButton.setAttribute("type", "button");
+
+        projectName.textContent = projects[i];
+        deleteButton.textContent = "delete";
+        container.appendChild(projectName);
+        container.appendChild(deleteButton);
+        projectButton.appendChild(container);
+
+        projectsBar.appendChild(projectButton);
+
+        //delete button click
+        deleteButton.addEventListener("click", ()=>{
+            removeProject(projects[i]);
+            displayProjects();
+        })
+
+        //project button click
+        projectButton.addEventListener("click", ()=>{
+            load(projects[i]);
+            insertTodoButton(projects[i]);
+        })
+
+        
+
+
+        projectsBar.appendChild(projectButton);
+    }
+}
+
+
+
+//add project button clicked
+const addProjectClick = function(){
+
+    const projectsBar = document.querySelector(".projects");
+    const addProjectButton = document.querySelector(".add-project-button");
+
+    //remove add projects button and replace with form
+    projectsBar.removeChild(addProjectButton);
+    const form = document.createElement("form");
+    //when form is submitted
+    form.addEventListener("submit", (e)=>{
+        e.preventDefault();
+
+        let projectName = document.querySelector("input").value;
+        createProject(projectName);
+        insertAddProject(projectName);
+    })
+
+    //text input
+    const projectInput = document.createElement("input");
+    projectInput.setAttribute("type", "text");
+    projectInput.setAttribute("name", "project");
+    form.appendChild(projectInput);
+
+    //submit and cancel buttons
+    const addButton = document.createElement("button");
+    const cancelButton = document.createElement("button");
+    addButton.textContent = "Add";
+    cancelButton.textContent = "Cancel";
+    form.appendChild(addButton);
+    form.appendChild(cancelButton);
+
+    addButton.setAttribute("type", "submit");
+    addButton.classList.add("add-button");
+
+    cancelButton.setAttribute("type", "button");
+    cancelButton.classList.add("cancel-button");
+
+    //cancel button clicked
+    cancelButton.addEventListener("click", ()=>{
+        insertAddProject();
+    })
+
+
+    projectsBar.appendChild(form);
+
+}
+
+//insert the add project button
+const insertAddProject = function(projectName){
+    const projectsBar = document.querySelector(".projects");
+    const form = document.querySelector("form");
+    const addProjectButton = document.createElement("button");
+    addProjectButton.classList.add("add-project-button");
+
+    //add project button clicks
+    addProjectButton.addEventListener("click", ()=>{
+        addProjectClick();
+    })
+
+
+    //No existing projects
+    if(form === null){
+        addProjectButton.textContent = "Add Project";
+        addProjectButton.setAttribute("type", "button");
+        projectsBar.appendChild(addProjectButton);
+
+
+    }
+    //When add button is clicked in form
+    else{
+        //remove form
+        projectsBar.removeChild(form);
+
+        displayProjects();
+
+        //insert add project button
+        addProjectButton.textContent = "Add Project";
+        addProjectButton.setAttribute("type", "button");
+        projectsBar.appendChild(addProjectButton);
+    }   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//on startup load all tasks
+displayProjects();
+insertAddProject();
+loadAll();
+insertTodoButton("all");
 
 //nav bar button clicks
 const allButton = document.querySelector(".all");
 allButton.addEventListener("click", () =>{
     loadAll();
+    insertTodoButton();
 });
+
+
 
 
 

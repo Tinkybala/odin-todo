@@ -1,4 +1,4 @@
-//todo object fatory function
+//todo object factory function
 
 function Todo(title, description, dueDate, priority){
     
