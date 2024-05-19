@@ -1,6 +1,10 @@
+import {compareAsc, format, getWeek} from 'date-fns';
+
 import {Todo} from './todo';
 const content = document.querySelector("#content");
 import {addItem, removeItem, getAllTodos, getTodos, modifyItem} from "./project";
+
+
 
 //function to load all todos from all projects
 function loadAll(){
@@ -45,7 +49,7 @@ function loadAll(){
             title.appendChild(titleInput);
 
 
-            date.textContent = todo.getDueDate();
+            date.textContent = format(todo.getDueDate(), 'MM/dd/yyyy');  
             deleteButton.textContent = "delete";
             container.appendChild(title);
             miniContainer.appendChild(date);
@@ -119,7 +123,7 @@ const load = function(projectName){
         title.appendChild(titleInput);
 
 
-        date.textContent = todo.getDueDate();
+        date.textContent = format(todo.getDueDate(), 'MM/dd/yyyy'); 
         deleteButton.textContent = "delete";
         container.appendChild(title);
         miniContainer.appendChild(date);
@@ -151,6 +155,172 @@ const load = function(projectName){
             const newTitle = document.getElementById(todo.getTitle()).value;
             modifyItem(projectName, j, "title", newTitle);
         })
+    }
+}
+
+//load today's tasks
+const loadToday = function(){
+    const currentDate = (new Date()).toISOString().substring(0,10);
+
+    //remove existing
+    const toRemove = Array.from(document.querySelectorAll(".inner > button"));
+    toRemove.forEach(element =>{
+        element.parentNode.removeChild(element);
+    })
+
+    //change heading
+    const header = document.querySelector(".content-title");
+    header.textContent = "Today";
+
+     
+    //loop through projects and the todos in each project and find projects that are due on the day
+    for(let i=0; i < localStorage.length; i++){
+        let key = localStorage.key(i);
+        let projectArray = JSON.parse(localStorage.getItem(key));
+
+        for(let j=0; j < projectArray.length; j++){
+            let todo = Todo(projectArray[j].title, projectArray[j].description, projectArray[j].dueDate, projectArray[j].priority);
+            
+            //show if todo dueDate is today
+            if(compareAsc(todo.getDueDate(), currentDate) === 0){
+                //create buttons with information
+                let button = document.createElement("button");
+                let container = document.createElement("span");
+                let miniContainer = document.createElement("span");
+                let title = document.createElement("form");
+                let titleInput = document.createElement("input");
+                let date = document.createElement("p");
+                let deleteButton = document.createElement("button");
+                
+                container.classList.add("task-content");
+                button.classList.add("task-button");
+                deleteButton.classList.add("delete-button");
+                
+                titleInput.setAttribute("type", "text");
+                titleInput.setAttribute("value", todo.getTitle());
+                titleInput.setAttribute("name", todo.getTitle());
+                titleInput.setAttribute("id", todo.getTitle());
+                titleInput.classList.add("task-title");
+                title.appendChild(titleInput);
+
+
+                date.textContent = format(todo.getDueDate(), 'MM/dd/yyyy');  
+                deleteButton.textContent = "delete";
+                container.appendChild(title);
+                miniContainer.appendChild(date);
+                miniContainer.appendChild(deleteButton);
+                container.appendChild(miniContainer);
+                button.appendChild(container);
+
+                const inner = document.querySelector(".inner");
+                inner.appendChild(button);
+
+                //delete button clicked
+                deleteButton.addEventListener("click", ()=>{
+                    removeItem(projectName, j);
+                    loadAll();
+                    insertTodoButton(projectName);
+                })
+
+                //title update submit
+                title.addEventListener("submit", (e)=>{
+                    e.preventDefault();
+                    
+                    const newTitle = document.getElementById(todo.getTitle()).value;
+                    modifyItem(projectName, j, "title", newTitle);
+                    document.activeElement.blur();
+                })
+
+                //click outside form
+                title.addEventListener("focusout", ()=>{
+                    const newTitle = document.getElementById(todo.getTitle()).value;
+                    modifyItem(projectName, j, "title", newTitle);
+                })
+            }
+        }
+    }
+}
+
+//load this week's tasks
+const loadWeek = function(){
+    const currentDate = (new Date()).toISOString().substring(0,10);
+
+    //remove existing
+    const toRemove = Array.from(document.querySelectorAll(".inner > button"));
+    toRemove.forEach(element =>{
+        element.parentNode.removeChild(element);
+    })
+
+    //change heading
+    const header = document.querySelector(".content-title");
+    header.textContent = "This Week";
+
+     
+    //loop through projects and the todos in each project and find projects that are due on the day
+    for(let i=0; i < localStorage.length; i++){
+        let key = localStorage.key(i);
+        let projectArray = JSON.parse(localStorage.getItem(key));
+
+        for(let j=0; j < projectArray.length; j++){
+            let todo = Todo(projectArray[j].title, projectArray[j].description, projectArray[j].dueDate, projectArray[j].priority);
+            
+            //show if todo is due this week
+            if(getWeek(currentDate) === getWeek(todo.getDueDate())){
+                //create buttons with information
+                let button = document.createElement("button");
+                let container = document.createElement("span");
+                let miniContainer = document.createElement("span");
+                let title = document.createElement("form");
+                let titleInput = document.createElement("input");
+                let date = document.createElement("p");
+                let deleteButton = document.createElement("button");
+                
+                container.classList.add("task-content");
+                button.classList.add("task-button");
+                deleteButton.classList.add("delete-button");
+                
+                titleInput.setAttribute("type", "text");
+                titleInput.setAttribute("value", todo.getTitle());
+                titleInput.setAttribute("name", todo.getTitle());
+                titleInput.setAttribute("id", todo.getTitle());
+                titleInput.classList.add("task-title");
+                title.appendChild(titleInput);
+
+
+                date.textContent = format(todo.getDueDate(), 'MM/dd/yyyy');  
+                deleteButton.textContent = "delete";
+                container.appendChild(title);
+                miniContainer.appendChild(date);
+                miniContainer.appendChild(deleteButton);
+                container.appendChild(miniContainer);
+                button.appendChild(container);
+
+                const inner = document.querySelector(".inner");
+                inner.appendChild(button);
+
+                //delete button clicked
+                deleteButton.addEventListener("click", ()=>{
+                    removeItem(projectName, j);
+                    loadAll();
+                    insertTodoButton(projectName);
+                })
+
+                //title update submit
+                title.addEventListener("submit", (e)=>{
+                    e.preventDefault();
+                    
+                    const newTitle = document.getElementById(todo.getTitle()).value;
+                    modifyItem(projectName, j, "title", newTitle);
+                    document.activeElement.blur();
+                })
+
+                //click outside form
+                title.addEventListener("focusout", ()=>{
+                    const newTitle = document.getElementById(todo.getTitle()).value;
+                    modifyItem(projectName, j, "title", newTitle);
+                })
+            }
+        }
     }
 }
 
@@ -214,11 +384,11 @@ const addTodoClick = function(project = "all"){
         let priority = document.getElementById("priority").value;
         const todo = Todo(title, description, dueDate, priority);
         addItem(projectName, todo);
-        console.log(projectName);
+        console.log(typeof dueDate);
         insertTodoButton(project);
     })
 
-    //text input
+    //input
     let projectName;
     if(project === "all") projectName = document.createElement("input");
     const title = document.createElement("input");
@@ -302,4 +472,4 @@ const addTodoClick = function(project = "all"){
     inner.appendChild(form);    
 }
 
-export {loadAll, load, insertTodoButton, addTodoClick};
+export {loadAll, load, loadToday, loadWeek, insertTodoButton, addTodoClick};

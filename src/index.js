@@ -1,7 +1,7 @@
 import './style.css';
 import {Todo} from "./todo";
-import { createProject, addItem, removeItem, getProjects, checkProject, getAllTodos, getTodos, removeProject} from "./project";
-import {loadAll, load, insertTodoButton, addTodoClick} from './ui';
+import { createProject, addItem, removeItem, getProjects, checkProject, removeProject} from "./project";
+import {loadAll, load, loadToday, loadWeek, insertTodoButton} from './ui';
 
 
 //functions
@@ -176,6 +176,16 @@ allButton.addEventListener("click", () =>{
     loadAll();
     insertTodoButton();
 });
+
+const todayButton = document.querySelector(".today");
+todayButton.addEventListener("click", ()=>{
+    loadToday();
+})
+
+const weekButton = document.querySelector(".week");
+weekButton.addEventListener("click", ()=>{
+    loadWeek();
+})
 
 
 

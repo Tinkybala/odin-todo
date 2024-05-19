@@ -1,3 +1,4 @@
+import { compareAsc } from "date-fns";
 import {Todo} from "./todo";
 
 //create empty project function
@@ -37,6 +38,8 @@ const checkProject = function(projectName){
 const addItem = function(projectName, todo){
     let project = JSON.parse(localStorage.getItem(projectName));
     project.push(todo.toPlainObject());
+    //sort the project array according to date
+    project.sort((a,b) => compareAsc(a.dueDate, b.dueDate));
     let projectString = JSON.stringify(project);
     localStorage.setItem(projectName, projectString);
     console.log("item added");

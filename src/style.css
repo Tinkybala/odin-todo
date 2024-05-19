@@ -130,6 +130,7 @@ footer{
 .add-todo-button{
     background-color: #c1e1c1;
     border-radius: 4px;
+    margin-bottom: 20px;
 }
 
 .projects form{
@@ -149,6 +150,10 @@ footer{
 
 .project-content p{
     font-size: 17px;
+}
+
+.todo-form{
+    margin-bottom: 20px;
 }
 
 
