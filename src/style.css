@@ -54,6 +54,7 @@ nav > button:hover{
     background-color: white;
 }
 
+
 #content{
     background-color: pink;
     grid-column: 2 / 3;

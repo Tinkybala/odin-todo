@@ -187,6 +187,16 @@ weekButton.addEventListener("click", ()=>{
     loadWeek();
 })
 
+const navButtons = document.querySelectorAll("nav > button");
+navButtons.forEach( button =>{
+    button.addEventListener("click", ()=>{
+        navButtons.forEach( button =>{
+            button.style.backgroundColor = 'lightpink';
+        })
+        button.style.backgroundColor = 'white';
+    })
+})
+
 
 
 
