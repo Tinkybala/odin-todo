@@ -2,6 +2,7 @@ import './style.css';
 import {Todo} from "./todo";
 import { createProject, addItem, removeItem, getProjects, checkProject, removeProject} from "./project";
 import {loadAll, load, loadToday, loadWeek, insertTodoButton} from './ui';
+import ax from './axolotl.webp';
 
 
 //functions
@@ -17,7 +18,7 @@ const displayProjects = function(){
         element.parentNode.removeChild(element);
     })
     
-    //insert projects
+    //insert projects'ax' (imported as 'ax')
     for(let i=0; i < projects.length; i++){
         let projectButton = document.createElement("button");
         let container = document.createElement("span");
@@ -169,6 +170,14 @@ displayProjects();
 insertAddProject();
 loadAll();
 insertTodoButton("all");
+
+//insert ax logo
+const logo = new Image();
+logo.src = ax;
+logo.setAttribute('id', 'logo');
+const header = document.querySelector("header");
+const logoName = document.querySelector("header h1");
+header.insertBefore(logo, logoName);
 
 //nav bar button clicks
 const allButton = document.querySelector(".all");
